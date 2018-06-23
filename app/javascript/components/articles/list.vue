@@ -3,7 +3,7 @@
   <div id="page-content-wrapper">
     <div class="container-fluid">
       <div class="card mt-4">
-        <div class="card-body">
+        <div class="card-body  background-class">
           <div class="row">
             <div class="col-md-4">
               <div class="form-group row">
@@ -31,18 +31,25 @@
               </div>
             </div>
           </div>
-          <div class="table-responsive">
-            <div class="table-responsive mt-4 border-top">
-            <b-table striped :fields="fields" :items="itemsToRender">
-              <template slot="No." slot-scope="data">
-                {{ (currentPage - 1) * 10 + data.index + 1 }}
-              </template>
-              <template slot="url" slot-scope="data">
-                <a :href="data.item.url" target="_blank">{{data.item.url}}</a>
-              </template>
-            </b-table>
-            </div>
-          </div>
+          <b-container>
+            {{itemsToRender}}
+          <b-row class="border-class">
+            <b-col class="column-style" v-for="(item,index) in itemsToRender" :key="index">
+              <div class="card card-height" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">{{item.title}}</h5>
+                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a :href="item.url" target="_blank" class="btn btn-primary">Link to url</a>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item"><b>Author:</b> {{item.author}}</li>
+                  <li class="list-group-item"><b>Number Of Comments:</b> {{item.num_comments}}</li>
+                  <li class="list-group-item"><b>Number Of Points:</b> {{item.num_points}}</li>
+                </ul>
+              </div>
+            </b-col>
+          </b-row>
+          </b-container>
           <b-pagination size="md" :total-rows="totalRows" v-model="currentPage" :per-page="perPage" @input="sortData()">
           </b-pagination>
       </div>
@@ -96,7 +103,7 @@ export default {
     itemsToRender() {
       if (!this.searchTitle && !this.selected) {
         this.totalRows = this.items.length;
-        return this.firstData.slice(0, 10);
+        return this.firstData.slice(0, 9);
       }
       if (this.searchTitle) {
         debugger;
@@ -105,7 +112,7 @@ export default {
           return reg.test(rt.title);
         });
         this.totalRows = this.firstData.length;
-        return this.firstData.slice(0, 10);
+        return this.firstData.slice(0, 9);
       }
       if (this.selected) {
         if (this.selected == 1) {
@@ -115,8 +122,8 @@ export default {
         }
         this.totalRows = this.firstData.length;
         return (this.firstData = this.firstData.slice(
-          this.currentPage * 10,
-          (this.currentPage + 1) * 10
+          this.currentPage * 9,
+          (this.currentPage + 1) * 9
         ));
       }
     }
@@ -129,13 +136,13 @@ export default {
       data.splice(0, 1);
       this.items = data;
       this.totalRows = this.items.length;
-      this.firstData = data.slice(0, 10);
+      this.firstData = data.slice(0, 9);
     },
 
     sortData() {
       this.firstData = this.items.slice(
-        this.currentPage * 10,
-        (this.currentPage + 1) * 10
+        this.currentPage * 9,
+        (this.currentPage + 1) * 9
       );
     }
   },
@@ -146,4 +153,13 @@ export default {
 </script>
 
 <style>
+.column-style {
+  padding: 20px;
+}
+.border-class {
+  border-bottom: solid black;
+}
+.background-class {
+  background: rgb(243, 240, 240);
+}
 </style>
