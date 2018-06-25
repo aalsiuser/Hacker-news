@@ -32,7 +32,6 @@
             </div>
           </div>
           <b-container>
-            {{itemsToRender}}
           <b-row class="border-class">
             <b-col class="column-style" v-for="(item,index) in itemsToRender" :key="index">
               <div class="card card-height" style="width: 18rem;">
